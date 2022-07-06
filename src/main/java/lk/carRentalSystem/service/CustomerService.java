@@ -1,0 +1,15 @@
+package lk.carRentalSystem.service;
+
+import lk.carRentalSystem.dto.CustomerDTO;
+import lk.carRentalSystem.entity.Reservation;
+
+import java.util.List;
+
+public interface CustomerService {
+    void saveCustomer(CustomerDTO dto);
+    void deleteCustomer(String id);
+    void updateCustomer(CustomerDTO dto);
+    CustomerDTO searchCustomer(String id);
+    List<CustomerDTO> getAllCustomers();
+    List<Reservation> getAllReservations();
+}
