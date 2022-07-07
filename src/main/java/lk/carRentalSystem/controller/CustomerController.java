@@ -1,14 +1,19 @@
 package lk.carRentalSystem.controller;
 
+
 import lk.carRentalSystem.dto.CustomerDTO;
-import lk.carRentalSystem.entity.Customer;
-import lk.carRentalSystem.service.CustomerServiceImpl;
+import lk.carRentalSystem.service.CustomerService;
+import lk.carRentalSystem.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+
 
 @RestController
 @RequestMapping("customer")
@@ -16,46 +21,31 @@ import java.io.IOException;
 public class CustomerController {
 
     @Autowired
-    CustomerServiceImpl service;
+    CustomerService service;
 
-    @PostMapping()
-    public String test(@RequestParam("idphoto") MultipartFile idphoto, @RequestParam("dlicen") MultipartFile dlicen, @RequestBody CustomerDTO customerDTO, ModelMap modelMap){
-        Customer cs = new Customer();
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseUtil test(@RequestPart("files") MultipartFile[] files, @RequestPart("customer") CustomerDTO dto) {
 
-        modelMap.addAttribute("idphoto",idphoto);
-        modelMap.addAttribute("dlicen",dlicen);
+        for (MultipartFile file : files) {
+            String projectPath = new File("/home/charith/Documents/Testing/CarRentalSystem/src/main/webapp/").getParentFile().getParentFile().getAbsolutePath();
+            File uploadsDir = new File(projectPath + "/uploads");
+            uploadsDir.mkdir();
+            try {
+                file.transferTo(new File(uploadsDir.getAbsolutePath() + "/" + file.getOriginalFilename()));
 
-
-        try {
-            byte[] bytes1= idphoto.getBytes();
-
-            System.out.println(idphoto.getOriginalFilename());
-            System.out.println(idphoto.getName());
-            System.out.println(idphoto.getContentType());
-            System.out.println(idphoto.getSize());
-            System.out.println(bytes1);
-
-            System.out.println("===============================================");
-            byte[] bytes2= dlicen.getBytes();
-
-            System.out.println(dlicen.getOriginalFilename());
-            System.out.println(dlicen.getName());
-            System.out.println(dlicen.getContentType());
-            System.out.println(dlicen.getSize());
-            System.out.println(bytes2);
-
-            System.out.println("===============================================");
-
-            System.out.println(customerDTO.getName());
-            System.out.println(customerDTO.getAddress());
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
+        service.saveCustomer(dto);
 
+        return new ResponseUtil(200, "Save", null);
+    }
 
-        return "image upload successfully";
+    public ResponseUtil updateCustomer(@RequestPart("files") MultipartFile[] files, @RequestPart("customer") CustomerDTO dto){
+
+        service.updateCustomer(dto);
+        return new ResponseUtil(200, "Save", null);
     }
 }
