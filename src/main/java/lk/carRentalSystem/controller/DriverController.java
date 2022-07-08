@@ -1,8 +1,7 @@
 package lk.carRentalSystem.controller;
 
-
-import lk.carRentalSystem.dto.CustomerDTO;
-import lk.carRentalSystem.service.CustomerService;
+import lk.carRentalSystem.dto.DriverDTO;
+import lk.carRentalSystem.service.DriverService;
 import lk.carRentalSystem.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,17 +12,16 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-
 @RestController
-@RequestMapping("customer")
+@RequestMapping("driver")
 @CrossOrigin
-public class CustomerController {
+public class DriverController {
 
     @Autowired
-    CustomerService service;
+    DriverService driverService;
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseUtil test(@RequestPart("files") MultipartFile[] files, @RequestPart("customer") CustomerDTO dto) {
+    public ResponseUtil SaveDriver(@RequestPart("files") MultipartFile[] files, @RequestPart("driver") DriverDTO dto) {
 
         for (MultipartFile file : files) {
             try {
@@ -37,14 +35,14 @@ public class CustomerController {
             }
         }
 
-        service.saveCustomer(dto);
+        driverService.saveDriver(dto);
 
         return new ResponseUtil(200, "Save", null);
     }
 
 
     @PutMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseUtil updateCustomer(@RequestPart("files") MultipartFile[] files, @RequestPart("customer") CustomerDTO dto){
+    public ResponseUtil updateDriver(@RequestPart("files") MultipartFile[] files, @RequestPart("driver") DriverDTO dto){
         for (MultipartFile file : files) {
             String projectPath = null;
             try {
@@ -53,6 +51,7 @@ public class CustomerController {
                 uploadsDir.mkdir();
                 file.transferTo(new File(uploadsDir.getAbsolutePath() + "/" + file.getOriginalFilename()));
 
+
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -60,20 +59,19 @@ public class CustomerController {
             }
 
         }
-        service.updateCustomer(dto);
+        driverService.updateDriver(dto);
         return new ResponseUtil(200, "Updated", null);
     }
 
     @GetMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseUtil getCustomerDetails(@RequestParam String id){
-        CustomerDTO customerDTO = service.searchCustomer(id);
-        return new ResponseUtil(200, "done", customerDTO);
+    public ResponseUtil getDriverDetails(@RequestParam String id){
+        DriverDTO driverDTO = driverService.searchDriver(id);
+        return new ResponseUtil(200, "done", driverDTO);
     }
 
     @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-    public  ResponseUtil getAllCustomerDetails(){
-        return new ResponseUtil(200, "Updated", service.getAllCustomers());
+    public  ResponseUtil getAllDriverDetails(){
+        return new ResponseUtil(200, "Updated", driverService.getAllDriver());
     }
-
 
 }
