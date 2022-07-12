@@ -1,6 +1,8 @@
 package lk.carRentalSystem.controller;
 
 import lk.carRentalSystem.dto.DriverDTO;
+import lk.carRentalSystem.dto.DriverScheduleDTO;
+import lk.carRentalSystem.service.DriverScheduleService;
 import lk.carRentalSystem.service.DriverService;
 import lk.carRentalSystem.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("driver")
@@ -19,6 +23,9 @@ public class DriverController {
 
     @Autowired
     DriverService driverService;
+
+    @Autowired
+    DriverScheduleService scheduleService;
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseUtil SaveDriver(@RequestPart("files") MultipartFile[] files, @RequestPart("driver") DriverDTO dto) {
@@ -69,9 +76,21 @@ public class DriverController {
         return new ResponseUtil(200, "done", driverDTO);
     }
 
+    @DeleteMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil deleteDriver(@RequestParam String id){
+        driverService.deleteDriver(id);
+        return new ResponseUtil(200, "done", null);
+    }
+
     @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
     public  ResponseUtil getAllDriverDetails(){
         return new ResponseUtil(200, "Updated", driverService.getAllDriver());
+    }
+
+    @GetMapping(params = {"date"})
+    public ResponseUtil getTodayDriverSchedule(@RequestParam Date date){
+        List<DriverScheduleDTO> schedule = scheduleService.getAllDriverScheduleByDate(date);
+        return new ResponseUtil(200, "done", schedule);
     }
 
 }

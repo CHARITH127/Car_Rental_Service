@@ -1,5 +1,6 @@
 package lk.carRentalSystem.dto;
 
+import lk.carRentalSystem.entity.CarImageDetails;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,11 @@ public class CarDTO {
     private double dailyRate;
     private double monthlyRate;
     private long mileage;
+    private double lossPayment;
+    private String maintainStatus;
+    private String damageStatus;
     private double extraKilometerPrice;
     private String color;
+
+    private CarImageDetailsDTO imageDetails;
 }

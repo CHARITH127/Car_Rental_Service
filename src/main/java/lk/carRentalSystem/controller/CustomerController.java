@@ -23,7 +23,7 @@ public class CustomerController {
     CustomerService service;
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseUtil test(@RequestPart("files") MultipartFile[] files, @RequestPart("customer") CustomerDTO dto) {
+    public ResponseUtil saveCustomer(@RequestPart("files") MultipartFile[] files, @RequestPart("customer") CustomerDTO dto) {
 
         for (MultipartFile file : files) {
             try {
@@ -68,6 +68,12 @@ public class CustomerController {
     public ResponseUtil getCustomerDetails(@RequestParam String id){
         CustomerDTO customerDTO = service.searchCustomer(id);
         return new ResponseUtil(200, "done", customerDTO);
+    }
+
+    @DeleteMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil deleteCustomer(@RequestParam String id){
+        service.deleteCustomer(id);
+        return new ResponseUtil(200, "done", null);
     }
 
     @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)

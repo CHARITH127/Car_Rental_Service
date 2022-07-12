@@ -1,27 +1,22 @@
-package lk.carRentalSystem.entity;
+package lk.carRentalSystem.dto;
 
+import lk.carRentalSystem.entity.Car;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity
 @ToString
-public class CarImageDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO )
+public class CarImageDetailsDTO {
     private int id;
-
     private String frontImage;
     private String backImage;
     private String sideImage;
     private String interiorImage;
 
-    /*@OneToOne(mappedBy = "imageDetails")
-    private Car car;*/
 }

@@ -13,7 +13,8 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data@Entity
+@Data
+@Entity
 @ToString
 public class Driver {
     @Id
@@ -26,10 +27,7 @@ public class Driver {
     private String driverIdCard;
     private String drivingLicense;
 
-    @OneToMany(mappedBy = "driver",cascade = CascadeType.ALL)
-    private List<Reservation> reservations;
-
-    @OneToMany(mappedBy = "driver",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL)
     private List<DriverSchedule> schedules;
 
 

@@ -5,8 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +23,13 @@ public class Car {
     private double dailyRate;
     private double monthlyRate;
     private long mileage;
+    private double lossPayment;
+    private String maintainStatus;
+    private String damageStatus;
     private double extraKilometerPrice;
     private String color;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn()
+    private CarImageDetails imageDetails;
 }

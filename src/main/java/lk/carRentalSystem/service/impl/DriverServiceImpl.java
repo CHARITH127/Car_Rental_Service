@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -61,8 +62,19 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
+    public DriverDTO getRandomDriver(Date pick_up_date, Date return_date) {
+        return mapper.map(repo.getRandomDriver(pick_up_date,return_date),DriverDTO.class);
+    }
+
+    @Override
     public List<DriverDTO> getAllDriver() {
         return mapper.map(repo.findAll(), new TypeToken<List<DriverDTO>>() {
+        }.getType());
+    }
+
+    @Override
+    public List<DriverDTO> getOccupiedDriversToday(Date today_date) {
+        return mapper.map(repo.getOccupiedDriversToday(today_date), new TypeToken<List<DriverDTO>>() {
         }.getType());
     }
 }

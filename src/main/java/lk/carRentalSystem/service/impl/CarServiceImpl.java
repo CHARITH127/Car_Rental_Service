@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.List;
+
 @Service
 @Transactional
 public class CarServiceImpl implements CarService {
@@ -25,7 +27,7 @@ public class CarServiceImpl implements CarService {
     public void saveCar(CarDTO dto) {
         if (carRepo.existsById(dto.getNumber())) {
             throw new RuntimeException("Customer All ready saved");
-        }else {
+        } else {
             carRepo.save(mapper.map(dto, Car.class));
         }
     }
@@ -34,7 +36,7 @@ public class CarServiceImpl implements CarService {
     public void deleteCar(String id) {
         if (carRepo.existsById(id)) {
             carRepo.deleteById(id);
-        }else {
+        } else {
             throw new RuntimeException("not such a customer");
         }
     }
@@ -60,6 +62,31 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<CarDTO> getAllCars() {
-        return mapper.map(carRepo.findAll(),new TypeToken<List<CarDTO>>(){}.getType());
+        return mapper.map(carRepo.findAll(), new TypeToken<List<CarDTO>>() {
+        }.getType());
+    }
+
+    @Override
+    public List<CarDTO> checkCarAvailability(Date pick_up_date, Date return_date) {
+        return mapper.map(carRepo.checkCarAvailability(pick_up_date, return_date), new TypeToken<List<CarDTO>>() {
+        }.getType());
+    }
+
+    @Override
+    public List<CarDTO> checkDamagedCars() {
+        return mapper.map(carRepo.checkDamagedCars(), new TypeToken<List<CarDTO>>() {
+        }.getType());
+    }
+
+    @Override
+    public List<CarDTO> checkTodayOnBooking(Date todayDate) {
+        return mapper.map(carRepo.checkTodayOnBooking(todayDate), new TypeToken<List<CarDTO>>() {
+        }.getType());
+    }
+
+    @Override
+    public List<CarDTO> checkNeedToMaintain() {
+        return mapper.map(carRepo.checkNeedToMaintain(), new TypeToken<List<CarDTO>>() {
+        }.getType());
     }
 }

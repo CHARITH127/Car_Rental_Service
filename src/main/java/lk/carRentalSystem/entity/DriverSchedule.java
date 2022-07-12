@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Time;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,13 +16,20 @@ import java.sql.Date;
 @ToString
 public class DriverSchedule {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO )
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int scheduleId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "driverID")
+    private Date pick_up_date;
+    private Date return_date;
+    private Time pick_up_time;
+
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.REFRESH})
+    @JoinColumn
     private Driver driver;
 
-    private Date check_in;
-    private Date check_out;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    private Reservation reservation;
+
+
 }
