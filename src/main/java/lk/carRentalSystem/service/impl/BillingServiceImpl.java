@@ -146,7 +146,7 @@ public class BillingServiceImpl implements BillingService {
     @Override
     public Double getPaymentsOnSpecific(Date date) {
         double total=0;
-        List<Billing> payments = billingRepo.getTodayPayments(date);
+        List<Billing> payments = billingRepo.getPaymentsOnSpecific(date);
         for (Billing payment : payments) {
             total+=payment.getFullPayment();
         }

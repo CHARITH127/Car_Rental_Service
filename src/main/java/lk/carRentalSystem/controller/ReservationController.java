@@ -94,4 +94,29 @@ public class ReservationController {
         List<ReservationDTO> resID = resService.getReservationByCustomerAboutToAccept(custId);
         return new ResponseUtil(200,"done",resID);
     }
+
+    @GetMapping(params = {"todayDate"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getTodayResrvations(@RequestParam Date todayDate){
+        return new ResponseUtil(200,"done",resService.getTodayReserving(todayDate));
+    }
+
+    @GetMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getReservationById(@RequestParam String id){
+        return new ResponseUtil(200,"done",resService.getReservationById(id));
+    }
+
+    @GetMapping(params = {"pickupDate"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getTodayPickups(@RequestParam Date pickupDate){
+        return new ResponseUtil(200,"done",resService.getTodayPickups(pickupDate));
+    }
+
+    @GetMapping(params = {"returnDate"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getTodayReturning(){
+        return new ResponseUtil(200,"done",resService.getTodayReturning());
+    }
+
+    @GetMapping
+    public  ResponseUtil getAllReservations(){
+        return new ResponseUtil(200,"done",resService.getAllReservations());
+    }
 }

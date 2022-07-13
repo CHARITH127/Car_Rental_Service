@@ -55,10 +55,8 @@ public class BillingController {
     }
 
     @GetMapping (params = {"specific"},produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseUtil getYearlyIncome(@RequestParam Date date){
+    public ResponseUtil getSpecificDateIncome(@RequestParam Date date){
         Double income = billingService.getPaymentsOnSpecific(date);
         return new ResponseUtil(200,"done",income);
     }
-
-
 }

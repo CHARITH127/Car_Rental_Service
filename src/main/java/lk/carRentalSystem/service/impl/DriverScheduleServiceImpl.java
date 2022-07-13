@@ -60,4 +60,10 @@ public class DriverScheduleServiceImpl implements DriverScheduleService {
         return mapper.map(scheduleRepo.getDriverScheduleByDate(date), new TypeToken<List<DriverScheduleDTO>>() {
         }.getType());
     }
+
+    @Override
+    public List<DriverScheduleDTO> getDriverScheduleByDriver(String driverNic) {
+        return mapper.map(scheduleRepo.getDriverScheduleByDriver(driverNic), new TypeToken<List<DriverScheduleDTO>>() {
+        }.getType());
+    }
 }

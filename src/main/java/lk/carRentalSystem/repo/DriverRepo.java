@@ -15,4 +15,7 @@ public interface DriverRepo extends JpaRepository<Driver,String> {
 
     @Query(value = "select * from Driver where driverNic  in (select driver_driverNic from DriverSchedule where (? between pick_up_date and return_date))", nativeQuery = true)
     List<Driver> getOccupiedDriversToday(Date today_date);
+
+    @Query(value = "select * from Driver where driverNic not in (select driver_driverNic from DriverSchedule where (? between pick_up_date and return_date))", nativeQuery = true)
+    List<Driver> getAvaulableDriversToday(Date today_date);
 }

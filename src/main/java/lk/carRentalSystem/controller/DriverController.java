@@ -87,10 +87,31 @@ public class DriverController {
         return new ResponseUtil(200, "Updated", driverService.getAllDriver());
     }
 
-    @GetMapping(params = {"date"})
+    @GetMapping(params = {"today"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getOccupiedDriversToday(@RequestParam Date today){
+        return new ResponseUtil(200, "Updated", driverService.getOccupiedDriversToday(today));
+    }
+
+    @GetMapping(params = {"date"},produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil getTodayDriverSchedule(@RequestParam Date date){
         List<DriverScheduleDTO> schedule = scheduleService.getAllDriverScheduleByDate(date);
         return new ResponseUtil(200, "done", schedule);
+    }
+
+    @GetMapping(params = {"Id"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getScheduleByDriver(String Id){
+        return new ResponseUtil(200, "Updated", scheduleService.getDriverScheduleByDriver(Id));
+    }
+
+    @GetMapping(params = {"currentDate"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public  ResponseUtil getAvailableDriversToday(@RequestParam Date currentDate){
+        return new ResponseUtil(200, "Updated", driverService.getAvailableDriversToday(currentDate));
+    }
+
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil updateDriverShcedule(@RequestPart("driverSchedule") DriverScheduleDTO scheduleDTO){
+        scheduleService.updateDriverSchedule(scheduleDTO);
+        return new ResponseUtil(200, "Successfully Updated", null);
     }
 
 }

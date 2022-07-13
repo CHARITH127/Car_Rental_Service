@@ -2,6 +2,7 @@ package lk.carRentalSystem.service;
 
 import lk.carRentalSystem.dto.CustomerDTO;
 import lk.carRentalSystem.dto.DriverDTO;
+import lk.carRentalSystem.entity.Driver;
 import lk.carRentalSystem.entity.Reservation;
 
 import java.sql.Date;
@@ -15,4 +16,5 @@ public interface DriverService {
     DriverDTO getRandomDriver(Date pick_up_date, Date return_date);
     List<DriverDTO> getAllDriver();
     List<DriverDTO> getOccupiedDriversToday(Date today_date);
+    List<DriverDTO> getAvailableDriversToday(Date today_date);
 }

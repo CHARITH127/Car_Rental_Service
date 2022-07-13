@@ -77,4 +77,10 @@ public class DriverServiceImpl implements DriverService {
         return mapper.map(repo.getOccupiedDriversToday(today_date), new TypeToken<List<DriverDTO>>() {
         }.getType());
     }
+
+    @Override
+    public List<DriverDTO> getAvailableDriversToday(Date today_date) {
+        return mapper.map(repo.getAvaulableDriversToday(today_date), new TypeToken<List<DriverDTO>>() {
+        }.getType());
+    }
 }

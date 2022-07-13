@@ -2,6 +2,7 @@ package lk.carRentalSystem.service;
 
 import lk.carRentalSystem.dto.CustomerDTO;
 import lk.carRentalSystem.dto.DriverScheduleDTO;
+import lk.carRentalSystem.entity.DriverSchedule;
 
 import java.sql.Date;
 import java.util.List;
@@ -20,4 +21,6 @@ public interface DriverScheduleService {
     List<DriverScheduleDTO> getAllDriverSchedule();
 
     List<DriverScheduleDTO> getAllDriverScheduleByDate(Date date);
+
+    List<DriverScheduleDTO> getDriverScheduleByDriver(String driverNic);
 }
