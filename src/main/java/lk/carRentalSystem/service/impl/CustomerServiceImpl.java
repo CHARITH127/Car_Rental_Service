@@ -63,6 +63,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public CustomerDTO getCustomerByUserNamePassword(String userName, String password) {
+        return mapper.map(customerRepo.getCustomerByNameAndPassword(userName,password),CustomerDTO.class);
+    }
+
+    @Override
     public List<CustomerDTO> getAllCustomers() {
         return mapper.map(customerRepo.findAll(),new TypeToken<List<CustomerDTO>>(){}.getType());
     }

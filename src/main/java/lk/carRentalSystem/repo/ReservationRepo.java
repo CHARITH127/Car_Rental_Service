@@ -24,4 +24,7 @@ public interface ReservationRepo extends JpaRepository<Reservation, String> {
 
     @Query(value = "select * from Reservation where reserve_date=?",nativeQuery = true)
     List<Reservation> getTodayReserving(Date date);
+
+    @Query(value = "select * from Reservation where return_date=? and reservation_status='Accept'",nativeQuery = true)
+    List<Reservation> getTodayReturn(Date date);
 }

@@ -79,6 +79,12 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public List<CarDTO> getSortedCars(String transmissionType, String brand, String type, String fuelType, int numberOfPassengers) {
+        return mapper.map(carRepo.sortCarsByAttributes(transmissionType,brand,type,fuelType,numberOfPassengers), new TypeToken<List<CarDTO>>() {
+        }.getType());
+    }
+
+    @Override
     public List<CarDTO> checkTodayOnBooking(Date todayDate) {
         return mapper.map(carRepo.checkTodayOnBooking(todayDate), new TypeToken<List<CarDTO>>() {
         }.getType());

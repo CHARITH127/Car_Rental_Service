@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -122,6 +123,14 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<ReservationDTO> getTodayReserving(Date date) {
         return mapper.map(reservationRepo.getTodayPickups(date), new TypeToken<List<ReservationDTO>>() {
+        }.getType());
+    }
+
+    @Override
+    public List<ReservationDTO> getTodayReturning() {
+        LocalDate date = LocalDate.now();
+        Date today = Date.valueOf(date);
+        return mapper.map( reservationRepo.getTodayReturn(today), new TypeToken<List<ReservationDTO>>() {
         }.getType());
     }
 

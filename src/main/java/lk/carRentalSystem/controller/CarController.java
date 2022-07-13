@@ -102,4 +102,16 @@ public class CarController {
         return new ResponseUtil(200, "done", carDTOS);
     }
 
+    @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getSortedCars(@RequestPart("sortCar") CarDTO carDTO){
+        String transmissionType = carDTO.getTransmissionType();
+        String brand = carDTO.getBrand();
+        String type = carDTO.getType();
+        String fuelType = carDTO.getFuelType();
+        int numberOfPassengers = carDTO.getNumberOfPassengers();
+
+        List<CarDTO> sortedCars = carService.getSortedCars(transmissionType, brand, type, fuelType, numberOfPassengers);
+        return new ResponseUtil(200, "done", sortedCars);
+    }
+
 }

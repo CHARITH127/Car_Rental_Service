@@ -15,6 +15,7 @@ public interface CarService {
     List<CarDTO> getAllCars();
     List<CarDTO> checkCarAvailability(Date pick_up_date,Date return_date);
     List<CarDTO> checkDamagedCars();
+    List<CarDTO> getSortedCars(String transmissionType, String brand,String type,String fuelType, int numberOfPassengers);
     List<CarDTO> checkTodayOnBooking(Date todayDate);
     List<CarDTO> checkNeedToMaintain();
 }

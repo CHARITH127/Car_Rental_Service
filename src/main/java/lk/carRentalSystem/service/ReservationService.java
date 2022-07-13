@@ -30,6 +30,8 @@ public interface ReservationService {
 
     List<ReservationDTO> getTodayReserving(Date date);
 
+    List<ReservationDTO> getTodayReturning();
+
     List<ReservationDTO> getReservationByCustomerAboutToAccept(String cID);
 
     List<ReservationDTO> getAllReservations();
