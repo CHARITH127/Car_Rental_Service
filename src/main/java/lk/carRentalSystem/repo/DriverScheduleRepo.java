@@ -16,4 +16,7 @@ public interface DriverScheduleRepo extends JpaRepository<DriverSchedule,Integer
 
     @Query(value = "select * from DriverSchedule where driver_driverNic=?" , nativeQuery = true)
     List<DriverSchedule> getDriverScheduleByDriver(String driverNic);
+
+    @Query(value = "select * from DriverSchedule where (pick_up_date between ?1 and ?2) and driver_driverNic=?3",nativeQuery = true)
+    List<DriverSchedule> getWeeklyDriverScheduleByDriver(Date monday,Date Sunday,String DriverID);
 }

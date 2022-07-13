@@ -23,4 +23,6 @@ public interface DriverScheduleService {
     List<DriverScheduleDTO> getAllDriverScheduleByDate(Date date);
 
     List<DriverScheduleDTO> getDriverScheduleByDriver(String driverNic);
+
+    List<DriverScheduleDTO> getWeeklyDriverScheduleByDriver(String DriverID);
 }

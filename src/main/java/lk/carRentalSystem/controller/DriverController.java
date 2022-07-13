@@ -47,7 +47,6 @@ public class DriverController {
         return new ResponseUtil(200, "Save", null);
     }
 
-
     @PutMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseUtil updateDriver(@RequestPart("files") MultipartFile[] files, @RequestPart("driver") DriverDTO dto){
         for (MultipartFile file : files) {
@@ -112,6 +111,11 @@ public class DriverController {
     public ResponseUtil updateDriverShcedule(@RequestPart("driverSchedule") DriverScheduleDTO scheduleDTO){
         scheduleService.updateDriverSchedule(scheduleDTO);
         return new ResponseUtil(200, "Successfully Updated", null);
+    }
+
+    @GetMapping(params = {"customerId"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getWeeklyDriverScheduleByCustomer(String customerId){
+        return new ResponseUtil(200, "Updated", scheduleService.getWeeklyDriverScheduleByDriver(customerId));
     }
 
 }

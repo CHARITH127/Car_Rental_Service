@@ -89,6 +89,12 @@ public class ReservationController {
        return new ResponseUtil(200,"done",resID);
     }
 
+    @DeleteMapping(params = {"reservationId"})
+    public ResponseUtil deleteReservation(@RequestParam String reservationId){
+        resService.deleteReservation(reservationId);
+        return new ResponseUtil(200,"Reservation Deleted",null);
+    }
+
     @GetMapping(params = {"custId"},produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil getReservationByCustomerAboutToAccept(@RequestParam String custId){
         List<ReservationDTO> resID = resService.getReservationByCustomerAboutToAccept(custId);

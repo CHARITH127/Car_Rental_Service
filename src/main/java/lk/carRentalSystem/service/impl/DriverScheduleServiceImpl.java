@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -64,6 +66,29 @@ public class DriverScheduleServiceImpl implements DriverScheduleService {
     @Override
     public List<DriverScheduleDTO> getDriverScheduleByDriver(String driverNic) {
         return mapper.map(scheduleRepo.getDriverScheduleByDriver(driverNic), new TypeToken<List<DriverScheduleDTO>>() {
+        }.getType());
+    }
+
+    @Override
+    public List<DriverScheduleDTO> getWeeklyDriverScheduleByDriver(String DriverID) {
+        LocalDate firstDate = LocalDate.now();
+        while (firstDate.getDayOfWeek() != DayOfWeek.MONDAY) {
+            firstDate = firstDate.minusDays(1);
+        }
+        System.out.println(firstDate);
+
+        LocalDate lastDate = LocalDate.now();
+        while (lastDate.getDayOfWeek() != DayOfWeek.SUNDAY) {
+            lastDate = lastDate.plusDays(1);
+        }
+
+        Date monday = Date.valueOf(firstDate);
+        Date sunday = Date.valueOf(lastDate);
+        System.out.println(monday + " "+sunday);
+
+        List<DriverSchedule> scheduleList = scheduleRepo.getWeeklyDriverScheduleByDriver(monday, sunday, DriverID);
+
+        return mapper.map(scheduleList, new TypeToken<List<DriverScheduleDTO>>() {
         }.getType());
     }
 }
