@@ -23,4 +23,4 @@
   <li>Layered architecture</li>
 </ul>
 <hr>
-**Developed By _wishvajith_**
+<p>Developed By <i>_wishvajith_</i> </p>
