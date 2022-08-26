@@ -2,8 +2,11 @@ package lk.carRentalSystem.controller;
 
 import lk.carRentalSystem.dto.DriverDTO;
 import lk.carRentalSystem.dto.DriverScheduleDTO;
+import lk.carRentalSystem.dto.ReservationDTO;
+import lk.carRentalSystem.entity.Reservation;
 import lk.carRentalSystem.service.DriverScheduleService;
 import lk.carRentalSystem.service.DriverService;
+import lk.carRentalSystem.service.ReservationService;
 import lk.carRentalSystem.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,6 +29,9 @@ public class DriverController {
 
     @Autowired
     DriverScheduleService scheduleService;
+
+    @Autowired
+    ReservationService reservationService;
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseUtil SaveDriver(@RequestPart("files") MultipartFile[] files, @RequestPart("driver") DriverDTO dto) {
@@ -108,7 +114,12 @@ public class DriverController {
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseUtil updateDriverShcedule(@RequestPart("driverSchedule") DriverScheduleDTO scheduleDTO){
+    public ResponseUtil updateDriverShcedule(@RequestBody DriverScheduleDTO scheduleDTO){
+        DriverDTO driverDTO = driverService.searchDriver(scheduleDTO.getDriver().getDriverNic());
+        scheduleDTO.setDriver(driverDTO);
+        ReservationDTO reservationDTO = reservationService.getReservationById(scheduleDTO.getReservation().getReservation_id());
+        scheduleDTO.setReservation(reservationDTO);
+
         scheduleService.updateDriverSchedule(scheduleDTO);
         return new ResponseUtil(200, "Successfully Updated", null);
     }
@@ -118,4 +129,23 @@ public class DriverController {
         return new ResponseUtil(200, "Updated", scheduleService.getWeeklyDriverScheduleByDriver(customerId));
     }
 
+    @GetMapping(params = {"resId"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil viewReservationByreservationId(@RequestParam String resId){
+        return new ResponseUtil(200, "Updated", scheduleService.getReservationByReservationId(resId));
+    }
+
+    @GetMapping(params = {"reservationID"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getDriverScheduleByReservationId(@RequestParam String reservationID){
+        return new ResponseUtil(200, "Updated", scheduleService.getScheduleFromReservation(reservationID));
+    }
+
+    @GetMapping(params = {"availableDrivers"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getAvailableDrivers(){
+        return new ResponseUtil(200, "Updated", scheduleService.setAvailableDrivers());
+    }
+
+    @GetMapping(params = {"occupiedDrivers"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getOccupiedDrivers(){
+        return new ResponseUtil(200, "Updated", scheduleService.setOccupiedDrivers());
+    }
 }

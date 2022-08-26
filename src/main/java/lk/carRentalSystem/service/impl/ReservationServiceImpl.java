@@ -4,8 +4,10 @@ import lk.carRentalSystem.dto.DriverScheduleDTO;
 import lk.carRentalSystem.dto.ReservationDTO;
 import lk.carRentalSystem.entity.DriverSchedule;
 import lk.carRentalSystem.entity.Reservation;
+import lk.carRentalSystem.repo.DriverRepo;
 import lk.carRentalSystem.repo.DriverScheduleRepo;
 import lk.carRentalSystem.repo.ReservationRepo;
+import lk.carRentalSystem.service.DriverService;
 import lk.carRentalSystem.service.ReservationService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -26,6 +28,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private DriverScheduleRepo scheduleRepo;
+
+    @Autowired
+    private DriverService driverService;
 
     @Autowired
     private ModelMapper mapper;
@@ -93,6 +98,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void updateReservation(ReservationDTO dto) {
         if (reservationRepo.existsById(dto.getReservation_id())) {
+
             reservationRepo.save(mapper.map(dto, Reservation.class));
         } else {
             throw new RuntimeException("Not Such a Reservation");
@@ -135,15 +141,15 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationDTO> getReservationByCustomerAboutToAccept(String cID) {
-        return mapper.map(reservationRepo.getReservationByCustomerAboutToAccept(cID), new TypeToken<List<ReservationDTO>>() {
+    public List<ReservationDTO> getReservationAboutToAccept() {
+        return mapper.map(reservationRepo.getReservationAboutToAccept(), new TypeToken<List<ReservationDTO>>() {
         }.getType());
     }
 
 
     @Override
     public List<ReservationDTO> getAllReservations() {
-        return mapper.map(reservationRepo.findAll(), new TypeToken<List<ReservationDTO>>() {
+        return mapper.map(reservationRepo.getAllReservations(), new TypeToken<List<ReservationDTO>>() {
         }.getType());
     }
 

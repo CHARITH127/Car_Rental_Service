@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,4 +33,7 @@ public class Car {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn()
     private CarImageDetails imageDetails;
+
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
+    private List<Reservation> reservations;
 }

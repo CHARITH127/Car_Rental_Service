@@ -1,6 +1,7 @@
 package lk.carRentalSystem.service.impl;
 
 import lk.carRentalSystem.dto.AdminDTO;
+import lk.carRentalSystem.dto.CustomerDTO;
 import lk.carRentalSystem.entity.Admin;
 import lk.carRentalSystem.repo.AdminLoginVerification;
 import lk.carRentalSystem.service.AdminLoginService;
@@ -21,7 +22,13 @@ public class AdminLoginServiceImpl implements AdminLoginService {
     ModelMapper mapper;
 
     @Override
-    public AdminDTO getAdminObject(String userName, String password) {
-       return mapper.map(loginVerification.getAdminObject(userName,password),AdminDTO.class);
+    public AdminDTO getAdminObject(String userId, String password) {
+        Admin adminObject = loginVerification.getAdminObject(userId, password);
+        if (!(adminObject==null)) {
+            return mapper.map(adminObject,AdminDTO.class);
+        }else {
+            return null;
+        }
+
     }
 }

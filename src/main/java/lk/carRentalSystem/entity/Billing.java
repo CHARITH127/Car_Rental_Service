@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Date;
 
 @NoArgsConstructor
@@ -18,9 +19,10 @@ public class Billing {
     private String billingId;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "reservation_id")
+    @JoinColumn()
     private Reservation reservation;
 
+    private int tripTour;
     private double loosePayment;
     private double fullPayment;
     private double damagePayment;

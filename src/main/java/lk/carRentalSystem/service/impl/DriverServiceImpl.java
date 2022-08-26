@@ -68,6 +68,17 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
+    public DriverDTO getDriverLogin(String driverId, String password) {
+        Driver driver = repo.getDriverByNameAndPassword(driverId, password);
+        if (!(driver==null)) {
+            return mapper.map(driver, DriverDTO.class);
+        }else {
+            return null;
+        }
+
+    }
+
+    @Override
     public List<DriverDTO> getAllDriver() {
         return mapper.map(repo.findAll(), new TypeToken<List<DriverDTO>>() {
         }.getType());

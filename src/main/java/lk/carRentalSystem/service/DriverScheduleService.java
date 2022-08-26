@@ -20,6 +20,12 @@ public interface DriverScheduleService {
 
     List<DriverScheduleDTO> getAllDriverSchedule();
 
+    Object getReservationByReservationId(String resId);
+
+    int setOccupiedDrivers();
+
+    int setAvailableDrivers();
+
     List<DriverScheduleDTO> getAllDriverScheduleByDate(Date date);
 
     List<DriverScheduleDTO> getDriverScheduleByDriver(String driverNic);

@@ -31,7 +31,7 @@ public class ReservationController {
     private DriverScheduleService scheduleService;
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseUtil saveReservation(@RequestPart("files") MultipartFile files, @RequestPart("reservationWithOutDriver") ReservationDTO dto) {
+    public ResponseUtil saveReservation(@RequestPart("files") MultipartFile files, @RequestPart("reservationWithOutDriver") ReservationDTO reservationDTO) {
         try {
             String projectPath = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getParentFile().getAbsolutePath();
             File uploadsDir = new File(projectPath + "/uploads");
@@ -44,20 +44,20 @@ public class ReservationController {
             e.printStackTrace();
         }
 
-        CustomerDTO customerDTO = customerService.searchCustomer(dto.getCustomer().getCustomerNic());
-        CarDTO car = carService.searchCar(dto.getCar().getNumber());
-        dto.setCar(car);
-        dto.setCustomer(customerDTO);
+        CustomerDTO customerDTO = customerService.searchCustomer(reservationDTO.getCustomer().getCustomerNic());
+        CarDTO car = carService.searchCar(reservationDTO.getCar().getNumber());
+        reservationDTO.setCar(car);
+        reservationDTO.setCustomer(customerDTO);
 
 
-        if (dto.getDriverStatus().equals("No")) {
-            System.out.println(dto);
-            resService.saveReservationWithoutDriver(dto);
+        if (reservationDTO.getDriverStatus().equals("No")) {
+            System.out.println(reservationDTO);
+            resService.saveReservationWithoutDriver(reservationDTO);
         } else {
-            Date pick_up_date = dto.getPick_up_date();
-            Date return_date = dto.getReturn_date();
-            Time pick_up_time = dto.getPick_up_time();
-            DriverDTO randomDriver = driverService.getRandomDriver(dto.getPick_up_date(), dto.getReturn_date());
+            Date pick_up_date = reservationDTO.getPick_up_date();
+            Date return_date = reservationDTO.getReturn_date();
+            Time pick_up_time = reservationDTO.getPick_up_time();
+            DriverDTO randomDriver = driverService.getRandomDriver(reservationDTO.getPick_up_date(), reservationDTO.getReturn_date());
 
             /*check the driver is available or not*/
             if (randomDriver == null) {
@@ -68,7 +68,7 @@ public class ReservationController {
                 scheduleDTO.setReturn_date(return_date);
                 scheduleDTO.setPick_up_time(pick_up_time);
                 scheduleDTO.setDriver(randomDriver);
-                scheduleDTO.setReservationDTO(dto);
+                scheduleDTO.setReservation(reservationDTO);
 
                 System.out.println(scheduleDTO);
                 scheduleService.saveDriverSchedule(scheduleDTO);
@@ -95,9 +95,9 @@ public class ReservationController {
         return new ResponseUtil(200,"Reservation Deleted",null);
     }
 
-    @GetMapping(params = {"custId"},produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseUtil getReservationByCustomerAboutToAccept(@RequestParam String custId){
-        List<ReservationDTO> resID = resService.getReservationByCustomerAboutToAccept(custId);
+    @GetMapping(params = {"pending"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getReservationByCustomerAboutToAccept(){
+        List<ReservationDTO> resID = resService.getReservationAboutToAccept();
         return new ResponseUtil(200,"done",resID);
     }
 
@@ -124,5 +124,15 @@ public class ReservationController {
     @GetMapping
     public  ResponseUtil getAllReservations(){
         return new ResponseUtil(200,"done",resService.getAllReservations());
+    }
+
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil setAcceptReservationRequest(@RequestBody ReservationDTO reservationDTO){
+        CarDTO carDTO = carService.searchCar(reservationDTO.getCar().getNumber());
+        CustomerDTO customerDTO = customerService.searchCustomer(reservationDTO.getCustomer().getCustomerNic());
+        reservationDTO.setCar(carDTO);
+        reservationDTO.setCustomer(customerDTO);
+        resService.updateReservation(reservationDTO);
+        return new ResponseUtil(200,"done",null);
     }
 }

@@ -10,6 +10,6 @@ public interface CustomerService {
     void deleteCustomer(String id);
     void updateCustomer(CustomerDTO dto);
     CustomerDTO searchCustomer(String id);
-    CustomerDTO getCustomerByUserNamePassword(String userName ,String password);
+    CustomerDTO getCustomerByUserNamePassword(String userId ,String password);
     List<CustomerDTO> getAllCustomers();
 }

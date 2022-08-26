@@ -28,7 +28,7 @@ public class Driver {
     private String drivingLicense;
 
     @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL)
-    private List<DriverSchedule> schedules;
+    private List<DriverSchedule> driverSchedules;
 
 
 }

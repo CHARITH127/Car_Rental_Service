@@ -1,6 +1,7 @@
 package lk.carRentalSystem.service.impl;
 
 import lk.carRentalSystem.dto.CarDTO;
+import lk.carRentalSystem.entity.Billing;
 import lk.carRentalSystem.entity.Car;
 import lk.carRentalSystem.repo.CarRepo;
 import lk.carRentalSystem.service.CarService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -58,6 +60,28 @@ public class CarServiceImpl implements CarService {
         } else {
             throw new RuntimeException("not such a customer");
         }
+    }
+
+    @Override
+    public int checkTodayAvailableCars() {
+        LocalDate date = LocalDate.now();
+        List<Car> cars = carRepo.checkTodayAvailableCars(Date.valueOf(date));
+        int total=0;
+        for (Car car : cars) {
+            total=total+1;
+        }
+        return total;
+    }
+
+    @Override
+    public int checkTodayOccupiedCars() {
+        LocalDate date = LocalDate.now();
+        List<Car> cars = carRepo.checkTodayOnBooking(Date.valueOf(date));
+        int total=0;
+        for (Car car : cars) {
+            total=total+1;
+        }
+        return total;
     }
 
     @Override

@@ -2,9 +2,13 @@ package lk.carRentalSystem.service.impl;
 
 import lk.carRentalSystem.dto.DriverScheduleDTO;
 import lk.carRentalSystem.dto.ReservationDTO;
+import lk.carRentalSystem.entity.Car;
 import lk.carRentalSystem.entity.DriverSchedule;
+import lk.carRentalSystem.entity.Reservation;
 import lk.carRentalSystem.repo.DriverScheduleRepo;
+import lk.carRentalSystem.repo.ReservationRepo;
 import lk.carRentalSystem.service.DriverScheduleService;
+import lk.carRentalSystem.service.ReservationService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +19,14 @@ import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class DriverScheduleServiceImpl implements DriverScheduleService {
+
+    @Autowired
+    private ReservationService reservationService;
 
     @Autowired
     private DriverScheduleRepo scheduleRepo;
@@ -67,6 +75,40 @@ public class DriverScheduleServiceImpl implements DriverScheduleService {
     public List<DriverScheduleDTO> getDriverScheduleByDriver(String driverNic) {
         return mapper.map(scheduleRepo.getDriverScheduleByDriver(driverNic), new TypeToken<List<DriverScheduleDTO>>() {
         }.getType());
+    }
+
+    @Override
+    public Object getReservationByReservationId(String resId){
+        if (scheduleRepo.getDriverScheduleByReservationId(resId)==null) {
+            ReservationDTO reservationById = reservationService.getReservationById(resId);
+            return reservationById;
+        }else {
+            DriverSchedule driverSchedule = scheduleRepo.getDriverScheduleByReservationId(resId);
+            return mapper.map(driverSchedule,DriverScheduleDTO.class);
+        }
+    }
+
+    @Override
+    public int setOccupiedDrivers() {
+        LocalDate date = LocalDate.now();
+        List<DriverSchedule> driverSchedules = scheduleRepo.setOccupiedDrivers(Date.valueOf(date));
+        int total=0;
+        for (DriverSchedule driverSchedule : driverSchedules) {
+            total=total+1;
+        }
+        return total;
+    }
+
+    @Override
+    public int setAvailableDrivers() {
+        LocalDate date = LocalDate.now();
+        System.out.println(Date.valueOf(date));
+        List<DriverSchedule> driverSchedules = scheduleRepo.setAvailableDrivers(Date.valueOf(date));
+        int total=0;
+        for (DriverSchedule driverSchedule : driverSchedules) {
+            total=total+1;
+        }
+        return total;
     }
 
     @Override

@@ -22,6 +22,7 @@ public class BillingDTO {
     private String billingId;
     private ReservationDTO reservation;
 
+    private int tripTour;
     private double loosePayment;
     private double fullPayment;
     private double damagePayment;

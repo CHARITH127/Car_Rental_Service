@@ -42,7 +42,7 @@ public class CustomerController {
         return new ResponseUtil(200, "Save", null);
     }
 
-    @PutMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(/*consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}*/ produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseUtil updateCustomer(@RequestPart("files") MultipartFile[] files, @RequestPart("customer") CustomerDTO dto){
         for (MultipartFile file : files) {
             String projectPath = null;

@@ -12,6 +12,8 @@ public interface CarService {
     void deleteCar(String id);
     void updateCar(CarDTO dto);
     CarDTO searchCar(String id);
+    int checkTodayAvailableCars();
+    int checkTodayOccupiedCars();
     List<CarDTO> getAllCars();
     List<CarDTO> checkCarAvailability(Date pick_up_date,Date return_date);
     List<CarDTO> checkDamagedCars();

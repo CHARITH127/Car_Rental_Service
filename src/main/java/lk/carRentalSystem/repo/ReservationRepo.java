@@ -16,8 +16,11 @@ public interface ReservationRepo extends JpaRepository<Reservation, String> {
     @Query(value = "select * from Reservation where customer_customerNic=?",nativeQuery = true)
     List<Reservation> getReservationByCustomer(String cID);
 
-    @Query(value = "select * from Reservation where customer_customerNic=? and reservation_status='pending'",nativeQuery = true)
-    List<Reservation> getReservationByCustomerAboutToAccept(String cID);
+    @Query(value = "select * from Reservation where  reservation_status='pending'",nativeQuery = true)
+    List<Reservation> getReservationAboutToAccept();
+
+    @Query(value = "select * from Reservation where  reservation_status='pending' or reservation_status='accept'",nativeQuery = true)
+    List<Reservation> getAllReservations();
 
     @Query(value = "select * from Reservation where pick_up_date=? and reservation_status='Accept'",nativeQuery = true)
     List<Reservation> getTodayPickups(Date date);

@@ -61,6 +61,12 @@ public class CarController {
         return new ResponseUtil(200, "Updated", null);
     }
 
+    @PutMapping(params = {"setAvailable"})
+    public ResponseUtil setAvailable(@RequestBody CarDTO dto) {
+        carService.updateCar(dto);
+        return new ResponseUtil(200, "Updated", null);
+    }
+
     @GetMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil getCarDetails(@RequestParam String id){
         CarDTO carDTO = carService.searchCar(id);
@@ -73,7 +79,7 @@ public class CarController {
         return new ResponseUtil(200, "done", null);
     }
 
-    @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(  params = {"getAll"},produces = MediaType.APPLICATION_JSON_VALUE)
     public  ResponseUtil getAllCarDetails(){
         return new ResponseUtil(200, "done", carService.getAllCars());
     }
@@ -102,7 +108,7 @@ public class CarController {
         return new ResponseUtil(200, "done", carDTOS);
     }
 
-    @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(params = "sortedCards",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil getSortedCars(@RequestPart("sortCar") CarDTO carDTO){
         String transmissionType = carDTO.getTransmissionType();
         String brand = carDTO.getBrand();
@@ -112,6 +118,16 @@ public class CarController {
 
         List<CarDTO> sortedCars = carService.getSortedCars(transmissionType, brand, type, fuelType, numberOfPassengers);
         return new ResponseUtil(200, "done", sortedCars);
+    }
+
+    @GetMapping(params = {"today"})
+    public ResponseUtil getAvailableCars(){
+        return new ResponseUtil(200, "done", carService.checkTodayAvailableCars());
+    }
+
+    @GetMapping(params = {"occupied"})
+    public ResponseUtil getOccupiedCars(){
+        return new ResponseUtil(200, "done", carService.checkTodayOccupiedCars());
     }
 
 }

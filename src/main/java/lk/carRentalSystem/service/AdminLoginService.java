@@ -4,5 +4,5 @@ import lk.carRentalSystem.dto.AdminDTO;
 import lk.carRentalSystem.entity.Admin;
 
 public interface AdminLoginService {
-   public AdminDTO getAdminObject(String userName , String password);
+   public AdminDTO getAdminObject(String userId , String password);
 }

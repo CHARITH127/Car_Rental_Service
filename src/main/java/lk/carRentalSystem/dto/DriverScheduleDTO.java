@@ -25,6 +25,6 @@ public class DriverScheduleDTO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
     private Date pick_up_date;
     private DriverDTO driver;
-    private ReservationDTO reservationDTO;
+    private ReservationDTO reservation;
 
 }
